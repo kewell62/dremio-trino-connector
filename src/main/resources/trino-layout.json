@@ -1,0 +1,94 @@
+{
+    "sourceType": "TrinoARP",
+    "metadataRefresh": {
+      "datasetDiscovery": true
+    },
+    "form": {
+      "tabs": [
+        {
+          "name": "General",
+          "isGeneral": true,
+          "sections": [
+            {
+              "name": "Trino Source",
+              "layout": "row",
+              "elements": [ 
+                {
+                  "propName": "config.connString",
+                  "placeholder": "Example: jdbc:trino://localhost:8080/memory/default",
+                  "size": "half",
+                  "tooltip": "Connection String (jdbc:trino://<host>:[<port>][/<catalog>/<schema>)",
+                  "validate": {
+                    "isRequired": true
+                  }
+                },
+                {
+                  "propName": "config.connProperties",
+                  "placeholder": "Example: SSL=true",
+                  "size": "full",                  
+                  "tooltip": " Properties String (property1=value1&propertie2=value2)",                  
+                  "validate": {
+                    "isRequired": false
+                  }
+                },
+                {
+                  "propName": "config.username",
+                  "size": "half",                                     
+                  "validate": {
+                    "isRequired": true
+                  }
+                },
+                {
+                  "propName": "config.password",
+                  "size": "half",                                                   
+                  "validate": {
+                    "isRequired": false
+                  }
+                }                                                   
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Advanced Options",
+          "sections": [
+            {
+              "elements": [
+                {
+                  "propName": "config.fetchSize",
+                  "size": "half",
+                  "tooltip": "Number of records to fetch at once.",
+                  "help": {
+                    "position": "bottom",
+                    "text": "Set to 0 to have Dremio automatically decide."
+                  },
+                  "validate": {
+                    "isNumber": true
+                  }
+                },                
+                {
+                  "propName": "config.maxIdleConns",
+                  "size": "half",
+                  "tooltip": "Sets the maximum number of idle connections that you want to keep.",
+                  "validate": {
+                    "isNumber": true
+                  }                 
+                },                
+                {
+                  "propName": "config.idleTimeSec",
+                  "size": "half",
+                  "tooltip": "Sets the idle time, in seconds, before a connection is evaluated for closure.",
+                  "validate": {
+                    "isNumber": true
+                  }                 
+                },
+                {
+                  "propName": "config.enableExternalQuery"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }

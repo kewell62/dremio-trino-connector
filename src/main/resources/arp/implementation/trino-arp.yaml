@@ -1,0 +1,242 @@
+metadata:
+  # Manually Configured Metadata Section.
+  name: TrinoARP
+  apiname: trino
+  spec_version: '1'
+
+syntax:
+  # Manually Configured Syntax Section.
+  identifier_quote: '"'
+  identifier_length_limit: 128
+  allows_boolean_literal: true
+  map_boolean_literal_to_bit: false
+  supports_catalogs: true
+  supports_schemas: true
+
+data_types:
+  mappings:
+  # Manually Configured Data Types Mappings Section.
+  - source:
+      name: "BOOLEAN"
+    dremio:
+      name: "boolean"
+    required_cast_arguments: "none"
+  - source:
+      name: "TINYINT"
+    dremio:
+      name: "integer"
+    required_cast_arguments: "none"          
+  - source:
+      name: "SMALLINT"
+    dremio:
+      name: "integer"
+    required_cast_arguments: "none"          
+  - source:
+      name: "INT"
+    dremio:
+      name: "integer"
+    required_cast_arguments: "none"      
+  - source:
+      name: "INTEGER"
+    dremio:
+      name: "integer"      
+    required_cast_arguments: "none"
+  - source:
+      name: "BIGINT"
+    dremio:
+      name: "bigint"      
+    required_cast_arguments: "none"         
+  - source:
+      name: "REAL"
+    dremio:
+      name: "float"
+    required_cast_arguments: "none"
+  - source:
+      name: "DOUBLE"
+    dremio:
+      name: "double"
+    required_cast_arguments: "none"         
+  - source:
+      name: "TIMESTAMP"
+      max_scale: 6
+    dremio:
+      name: "timestamp"
+    required_cast_arguments: "none"
+  - source:
+      name: "DATE"
+    dremio:
+      name: "date"
+    required_cast_arguments: "none"
+  - source:
+      name: "TIME"
+    dremio:
+      name: "time"
+    required_cast_arguments: "none"      
+  - source:
+      name: "CHAR"
+    dremio:
+      name: "varchar"
+    required_cast_arguments: "none"
+  - source:
+      name: "VARBINARY"
+    dremio:
+      name: "varbinary"
+    required_cast_arguments: "none"       
+  - source:
+      name: "VARCHAR"
+    dremio:
+      name: "varchar"
+    required_cast_arguments: "none"
+
+relational_algebra:
+  aggregation:
+    enable: true
+    group_by_ordinal: false
+    distinct: true
+    count_functions:
+      count_star:
+        enable: true
+      count:
+        enable: true
+      count_distinct:
+        enable: true
+    functions:
+    - names:
+      - "avg"
+      signatures:
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "integer"
+        return: "double"
+    - names:
+      - "max"
+      - "min"
+      signatures:
+      - args:
+        - "integer"
+        return: "integer"
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "varchar"
+        return: "varchar"
+    - names:
+      - "sum"
+      signatures:
+      - args:
+        - "double"
+        return: "double"
+      - args:
+        - "integer"
+        return: "bigint"
+
+  except:
+    enable: false
+  project:
+    enable: true
+  join:
+    enable: true
+    cross:
+      enable: true
+    inner:
+      enable: true
+      inequality: true
+    left:
+      enable: true
+      inequality: true
+    right:
+      enable: true
+      inequality: true
+    full:
+      enable: true
+      inequality: true
+  sort:
+    enable: true
+    order_by:
+      enable: true
+      default_nulls_ordering: high
+    fetch_offset:
+      offset_fetch:
+        enable: true
+        format: 'LIMIT {1} OFFSET {0}'
+      offset_only:
+        enable: false
+      fetch_only:
+        enable: true
+        format: 'LIMIT {0}'
+  union:
+    enable: true
+  union_all:
+    enable: true
+  values:
+    enable: true
+    method: values
+
+# Describe the set of function signatures that are internally supported.
+expressions:
+  subqueries:
+    correlated: true
+    scalar: true
+    in_clause: true
+  supports_case: true
+  supports_over: false
+  operators:
+    - names:
+      - "="
+      - "!="
+      - "<>"
+      - ">"
+      - ">="
+      - "<"
+      - "<="
+      signatures:
+      - args:
+        - "double"
+        - "double"
+        return: "boolean"
+      - args:
+        - "double"
+        - "integer"
+        return: "boolean"
+      - args:
+        - "double"
+        - "varchar"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "double"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "integer"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "varchar"
+        return: "boolean"
+      - args:
+        - "varchar"
+        - "varchar"
+        return: "boolean"
+    - names:
+      - "not"
+      signatures:
+      - args:
+        - "boolean"
+        return: "boolean"
+
+
+  variable_length_operators:
+    - names:
+        - and
+      variable_signatures:
+        - return: boolean
+          arg_type: boolean
+    - names:
+        - or
+      variable_signatures:
+        - return: boolean
+          arg_type: boolean
