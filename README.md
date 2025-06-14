@@ -9,7 +9,10 @@ This is a community based Trino Dremio connector made using the ARP framework.
 ### Required Parameters
 
 * JDBC URL
-   - Ex: jdbc:trino://host:port/catalog (optional)/schema (optional) 
+   - Ex: jdbc:trino://host:port
+
+* Catalog
+   - Ex: catalog . The catalog is mandatory. 
 
 * Session Properties
    - Ex : param1=value&param2=value.
