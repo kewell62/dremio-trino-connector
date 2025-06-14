@@ -32,47 +32,53 @@ public class TrinoConf extends AbstractArpConf<TrinoConf> {
   public String connString;
 
   @Tag(2)
+  @DisplayMetadata(label = "Catalog")
+  @NotMetadataImpacting
+  public String connCatalog;
+
+  @Tag(3)
   @DisplayMetadata(label = " Session Properties (optional)")
   @NotMetadataImpacting
   public String connProperties = "SSL=true&timezone=America/New_York";
 
   @NotBlank  
-  @Tag(3)
+  @Tag(4)
   @DisplayMetadata(label = "Username")
   public String username;
 
   @Secret
-  @Tag(4)
+  @Tag(5)
   @DisplayMetadata(label = "Password (optional)")
   @NotMetadataImpacting
   public String password;    
 
-  @Tag(5)
+  @Tag(6)
   @DisplayMetadata(label = "Record fetch size")
   @NotMetadataImpacting
   public int fetchSize = 200;
   
-  @Tag(6)
+  @Tag(7)
   @DisplayMetadata(label = "Maximum idle connections")
   @NotMetadataImpacting
   public int maxIdleConns = 8;
 
-  @Tag(7)
+  @Tag(8)
   @DisplayMetadata(label = "Connection idle time (s)")
   @NotMetadataImpacting
   public int idleTimeSec = 60;
 
-  @Tag(8)
+  @Tag(9)
   @NotMetadataImpacting
   @DisplayMetadata(label = "Grant External Query access")
   public boolean enableExternalQuery = true;  
 
   @VisibleForTesting
   public String toJdbcConnectionString() {
-    final String jdbcConnString = checkNotNull(this.connString, "Missing Trino URL.");
+    final String connString = checkNotNull(this.connString, "Missing Trino URL.");
+    final String catalog = checkNotNull(this.connCatalog, "Missing Trino Catalog.");
     final String user = this.username == null ? "" : "user=" + this.username + "&";
     final String pwd  = this.password == null ? "" : "password=" + this.password + "&";
-    return String.format("%s?%s%s%s", jdbcConnString, user, pwd,this.connProperties);    
+    return String.format("%s/%s?%s%s%s", connString, catalog, user, pwd, this.connProperties);    
   }
 
   @Override
@@ -82,9 +88,12 @@ public class TrinoConf extends AbstractArpConf<TrinoConf> {
         .withFetchSize(fetchSize)
         .withDatasourceFactory(this::newDataSource)
         .withAllowExternalQuery(enableExternalQuery)
+	.withDatabase(this.connCatalog)
+	.withShowOnlyConnDatabase(true)
         .addHiddenTableType("FOREIGN TABLE")
         .addHiddenTableType("SYSTEM VIEW")
         .build();
+
   }
 
   private CloseableDataSource newDataSource() {
