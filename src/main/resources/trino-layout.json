@@ -15,13 +15,22 @@
               "elements": [ 
                 {
                   "propName": "config.connString",
-                  "placeholder": "Example: jdbc:trino://localhost:8080/memory/default",
+                  "placeholder": "Example: jdbc:trino://localhost:8080",
                   "size": "half",
-                  "tooltip": "Connection String (jdbc:trino://<host>:[<port>][/<catalog>/<schema>)",
+                  "tooltip": "Connection String (jdbc:trino://<host>:<port>)",
                   "validate": {
                     "isRequired": true
                   }
                 },
+                {
+                  "propName": "config.connCatalog",
+                  "placeholder": "Example: system",
+                  "size": "half",
+                  "tooltip": "The catalog is mandatory",
+                  "validate": {
+                    "isRequired": true
+                  }
+                },                
                 {
                   "propName": "config.connProperties",
                   "placeholder": "Example: SSL=true",
